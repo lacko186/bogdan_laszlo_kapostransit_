@@ -329,7 +329,7 @@ A KaposTransit rendszer egyik legfontosabb funkcióját a menetrendi adatokat sz
 **Főbb menetrendi végpontok:**
 
 - **/api/stop**: Az összes elérhető máv megálló
-- -  **/api/route**: Az összes elérhető máv útvonal
+- **/api/route**: Az összes elérhető máv útvonal
 -  **/api/marker**: Az összes kaposvári helyi járatos autóbusz neve, koordinátái 
 -  **/api/buszjarat**: Az összes kaposvári helyi autóbusz útvonalai
 
