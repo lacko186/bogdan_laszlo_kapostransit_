@@ -57,7 +57,6 @@
    - 6.1 API áttekintés
    - 6.2 Végpontok
      - 6.2.1 Menetrend végpontok
-     - 6.2.2 Járatállapot végpontok
    - 6.3 Példa kérések és válaszok
 
 7. [Mobil kompatibilitás](#7-mobil-kompatibilitás)
@@ -107,7 +106,7 @@ A projekt célja a Kaposvári Közlekedési Zrt. helyi járatos közlekedéséne
 A felhasználói visszajelzések alapján elégedettlenséggel találkoztunk, saját magunk is tapasztaltuk a <b><i>KKZRT</i></b> weboldalának bonyolult felépítését.<br>
 Az oldal inspirációt ad egy modern közlekedési oldal létrehozásában.<br>
 
- A korábbi rendszer számos kritikus hiányossággal küzdött, amelyek megnehezítették az utazók mindennapi tapasztalatait. A papíralapú menetrendek, a kizárólag helyszíni jegyértékesítés, és a statikus információs rendszerek.
+ A korábbi rendszer számos kritikus hiányossággal küzdött, amelyek megnehezítették az utazók mindennapi tapasztalatait. A papíralapú menetrendek, a statikus információs rendszerek.
 
 
  felhasználói élményét javítása és a helyi járatos közlekedés fellendítése érdekében hoztuk létre a KaposTransit weboldalt.
@@ -155,18 +154,17 @@ A KaposTransit fejlesztése során alapvető célunk volt, hogy a lehető legsz�
 
 
 ###### Böngésző támogatás
-A platformot úgy terveztük, hogy kompatibilis legyen több böngészővel is, biztosítva a zökkenőmentes, biztonságos böngészést:
+A platformot úgy terveztük, hogy kompatibilis legyen több böngészővel is, biztosítva a zökkenőmentes, biztonságos böngészést.
 
 1. **Asztali böngészők**
-   - Google Chrome (legújabb verzió)
-   - Microsoft Edge (legújabb verzió)
+   Google Chrome Böngészőben valamint Microsoft Edge-ben teszteltük
    
-2. **Mobil böngészők**
-   - Chrome for Android
-
 ###### Speciális szoftver követelmények
-- JavaScript támogatás
-- HTML5 kompatibilitás
+
+A modern szoftverfejlesztés elengedhetetlen eleme a javaScript-támogatás, amely biztosítja a webes alkalmazások dinamikus működését.
+A HTML5 szabvány támogatása jelentős a mai webes megoldásoknál. A korszerű adatbeviteli mezők implementálása tovább növeli a felhasználói élményt és a felület használhatóságát.
+Elengedhetetlen a folyamatos böngészőkompatibilitás fenntartása, rendszeres ellenőrzésekkel. Ez garantálja, hogy a szoftver rugalmasan alkalmazkodjon a változó technológiai környezethez és felhasználói igényekhez.
+
 
 ###### 2.3 Hálózati követelmények: folyamatos és biztonságos kapcsolat
 
@@ -250,33 +248,23 @@ Egy e-mail cím csak egy fiókhoz használhatóm, valós személyes adatokat kel
 
 ###### 4.1 Menetrendek: dinamikus információs rendszer
 
-A KaposTransit menetrendjei túlmutatnak a hagyományos, statikus információszolgáltatáson. Egy valós idejű rendszert hoztunk létre, amely folyamatosan frissül és alkalmazkodik a pillanatnyi forgalmi viszonyokhoz.
+ Egy olyan rendszert hoztunk létre, amely folyamatosan frissül és alkalmazkodik a pillanatnyi forgalmi viszonyokhoz.
 
  **Térképes megjelenítés**
-   A weboldal Kaposvár 
-   - Valós idejű frissítések
-   - Részletes járatinformációk
-   - Digitálisan és fizikailag is használható dokumentumok
-   - Járatszám szerint rendezés
-   - Megállóhelyek szerinti keresés
-   - Aktuális járatpozíciók megjelenítése
-   - Átszállási lehetőségek azonnali kijelzése
-   - Interaktív várostérkép
+   A weboldal Kaposvár térség helyi járatos adatok feldolgozásával készült. A Valós idejű frissítések lehetővé teszik, hogy a felhasználó meg tudja tekinteni a következő induló járatot. Részletes járatinformációk az következő induló járat megállóiról. Keresőmező segítségével járatszám szerinti rendezést, azok hétvége és hétköznapi szétválogatását oldottuk meg. Mindehez interaktív várostérkép is tartozik amelyen a megállókat koordinátákkal-jelölőkkel ábrázoltuk.
 
  **Keresési lehetőségek**
-   - Megállónév alapján keresés
-   - Térképes kiválasztás
+   A térképen legördülő listából választhatja ki a felhasználó a járatot. 
 
 ###### 4.2 Célállomás kiválasztása
-- Földrajzi pontosság
+A projekt létrehozása során kiemelt figyelmet fordítottunk a földrajzi pontosságra, mindehez Google maps API-t használtunk, a kezdőponttól végpontig való keresés, a megállók koordinátái alapján működő megálló kereső opció ennek segítségével történik, a megállók nevei api alapján dinamikusan koordinátából történik.  
 
 ###### 4.3 Járatállapot figyelő: valós idejű mobilitási információk
 
 ###### 4.3.1 Valós idejű járatinformációk
 1. **Pontos érkezési adatok**
-   - Valós idejű érkezési és indulási idők
+   Szintén a Google maps API segítségével elértük azt, hogy a MÁV valamint a Volán által nyilvántartott indulásidők pontosan hozzá legyenek rendelve a keresés opcióhoz, eredményképp pontos indulásidőt és valós idejű érkezést kaptunk vissza.
 
-A fő funkciók részletesen bemutatják, hogyan válik a KaposTransit egy átfogó, felhasználóbarát mobilitási megoldássá.
 </div>
 
 <div id="5-gtfs-integráció">
@@ -336,9 +324,6 @@ A KaposTransit rendszer egyik legfontosabb funkcióját a menetrendi adatokat sz
 
 Ezek a végpontok lehetővé teszik, hogy az alkalmazásunk mindig naprakész menetrendi információkkal szolgáljon a felhasználók számára. A válaszok tartalmazzák az időpontokat, útvonalakat, megállókat és minden olyan adatot, amely egy utazás megtervezéséhez szükséges.
 
-#### 6.2.2 Járatállapot végpontok
-
-A járatok aktuális állapotát nyomon követő végpontok valós időben vagy közel valós időben szolgáltatnak információt a közlekedő járművekről.
 
 **Főbb járatállapot végpontok:**
 
@@ -436,22 +421,16 @@ A KaposTransit mobil kompatibilitása nem csupán egy technikai megoldás, hanem
 
 ###### Dizájn alapelvek
 1. **Adaptív felületarchitektúra**
-   - Eszközfüggetlen felhasználói felület
-   - Konzisztens felhasználói élmény minden platformon
+   A létrehozás során külön figyelmet fordítottunk arra hogy eszközfüggetlen felhasználói felületet hozzunk létre
 
 2. **Érintőképernyős optimalizáció**
-   - Nagy érintési felületek
-   - Ujjbarát navigációs elemek
-   - Gesztus-alapú interakciók támogatása
-   - Érzékeny és precíz érintésvezérlés
+   A tesztelés során mobilos nézetben nagy érintési felületek, valamint ujjbarát navigációs elemek, támogatja az interakciókat. 
 
 3. **Teljesítmény-optimalizálás**
-   - Gyors betöltési idők
-   - Hatékony erőforrás-kezelés
-   - Alacsony energiafogyasztás
+   Különös figyelmet fordítottunk a gyors betöltési időkre, ehhez próbáltuk optimalizáni az időigényes feladatokat,mindemellett hatékony erőforrás-kezelést is akartunk alacsony energiafogyasztással, ami részben megvalósult.
 
 ###### Támogatott eszköztípusok
-- Okostelefonok (Android)
+Projektünket Okostelefonokon is teszteltük Android valamint IOS operációs rendszerrel egyaránt. 
 
 <center>  
 
@@ -541,28 +520,23 @@ A KaposTransit elsődleges célja, hogy a legmagasabb szintű adatvédelmi és b
 ###### Adatvédelmi alapelvek
 
 1. **Adatminimalizálás**
-   - Kizárólag a szükséges adatok gyűjtése
-   - Célhoz kötött adatkezelés
+   Kizárólag a szükséges adatokat gyűjtünk amelyek a késöbbiek során jegyvásárlás opcióhoz valamint felhasználói fiók használatához alkalmazunk. Mindez célhoz kötött adatkezelés.
 
 2. **Bizalmasság**
-   - Teljes körű adatvédelem
-   - Harmadik fél általi adatkezelés szigorú korlátozása
+   Projekt létrehozása során törekedtünk magas körű adatvédelemre, de a jövőben sokkal erősebb védelmet alakítunk ki. 
 
 ###### Kezelt adattípusok
 - **Személyes azonosító adatok**
-   - Felhasználó név
-   - E-mail cím
-   - Jelszó az adott fiókhoz
+   Jelenleg Felhasználó nevet valamint e-mail címet és jelszót tárolunk, amely majd a későbbiek során a jegyvásárlás valamint a felhasználói fiók opcióhoz rendelünk.  
 
 ###### 8.2 Adatkezelési tájékoztató: jogok és kötelezettségek
 
 ###### Adatkezelés részletei
 1. **Adattárolási időtartamok**
-   - Személyes adatok: Folyamatos tárolás
-   - Nem titkosított, de máshol tárolt adatok
+   A Személyes adatokat folyamatos tároljuk, nem titkosított, de máshol tároljuk adatokat.
 
 2. **Adatok felhasználásának célja**
-   - Jogszabályi kötelezettségek teljesítése
+   a jogszabályi kötelezettségeknek eleget tesz.
 
 </div>
 
@@ -573,40 +547,18 @@ A KaposTransit elsődleges célja, hogy a legmagasabb szintű adatvédelmi és b
 A KaposTransit célja, hogy a lehető legzökkenőmentesebb felhasználói élményt biztosítsa, ugyanakkor felkészültünk a felmerülő technikai kihívásokra is. Átfogó hibaelhárítási rendszerünk segít a felhasználóknak gyorsan és hatékonyan megoldani a felmerülő problémákat.
 
 ###### Technikai hibák kategorizálása
-1. **Bejelentkezési problémák**
-   - Elfelejtett jelszó
-   - Egyéb hitelesítési nehézségek (E-mail cím)
-
-   **Javasolt megoldások:**
-   - Jelszó-visszaállítási folyamat
-   - Ügyfélszolgálati segítségkérés
 
 2. **Térképes funkciók hibái**
-   - Helymeghatározási pontatlansságok
-   - Útvonaltervezési hibák
-   - Térképes adatok elavultsága
+   Helymeghatározási pontatlansságok előfordulhatnak,útvonaltervezési hibák.
 
-   **Javasolt megoldások:**
-   - Manuális helymegadás
-   - Térképes adatok frissítése
-   - Alternatív útvonalak keresése
-
-###### 9.2 Ügyfélszolgálati elérhetőségek: komplex támogatási rendszer
+###### 9.2 Ügyfélszolgálati elérhetőségek:
 
 ###### Támogatási csatornák
 1. **Telefonos ügyfélszolgálat**
-   - Közvetlen emberi segítségnyújtás
-   - Munkanapokon: 4:15-22:30
-   - Dedikált technikai támogatási vonal
-   - Magyar nyelvű, képzett ügyintézők
+   A kaposbusz által nyújtott közvetlen emberi segítségnyújtás, informálódás, amelyet magyar nyelvű, képzett ügyintézők hajtanak végre
 
 2. **E-mail támogatás**
-   - Részletes problémaleírás küldése
-   - Hivatalos támogatási e-mail cím
-   - Válaszadási idő: 24-48 óra
-   - Részletes dokumentáció csatolásának lehetősége
-
-A hibakeresés és támogatás nem csupán egy technikai folyamat, hanem a KaposTransit azon elkötelezettsége, hogy minden felhasználónk zökkenőmentes és élménydús utazást tudjon tervezni.
+   E-mail címen keresztül lehetőség nyílik részletes problémaleírás küldésére, visszajellzésre, valamint részletes dokumentáció csatolására.
 
 
 </div>
@@ -616,7 +568,7 @@ A hibakeresés és támogatás nem csupán egy technikai folyamat, hanem a Kapos
 
 ###### 10.1 Gyakori hibajelenségek: diagnosztikai és megoldási útmutató
 
-A KaposTransit célja, hogy a lehető legzökkenőmentesebb felhasználói élményt biztosítsa, ugyanakkor felkészültünk a felmerülő technikai kihívásokra is. Átfogó hibaelhárítási rendszerünk segít a felhasználóknak gyorsan és hatékonyan megoldani a felmerülő problémákat.
+A KaposTransit célja, hogy a lehető legzökkenőmentesebb felhasználói élményt biztosítsa, ugyanakkor felkészültünk a felmerülő technikai kihívásokra is.
 
 #### Technikai hibák kategorizálása
 1. **Bejelentkezési problémák**
@@ -667,18 +619,10 @@ A KaposTransit fejlesztési stratégiája nem csupán a jelenlegi igények kiszo
 #### Technológiai fejlesztések
 
 1. **Mesterséges intelligencia alapú megoldások**
-   - Prediktív útvonaltervezés
-   - Gépi tanuláson alapuló forgalmi előrejelzés
-   - Személyre szabott utazási ajánlatok
-   - Valós idejű forgalomoptimalizálás
-   - Intelligens közlekedésirányítási rendszerek
+   A jövőben tervezzük az útvonaltervezés megújítását modernizálását,gépi tanuláson alapuló forgalmi előrejelzés beépítését, személyre szabott utazási ajánlatokkal bővítenénk. Valós idejű forgalomoptimalizálást szeretnék, valamint intelligens közlekedésirányítási rendszert kíépíteni.
 
 2. **Kiterjesztett valóság (AR) navigáció**
-   - Valós idejű navigációs információk
-   - Megállóhelyek és útvonalak AR-alapú megjelenítése
-   - Valós környezetbe ágyazott utazási információk
-   - Interaktív térképes megoldások
-   - Látássérültek számára speciális navigációs segédeszközök
+   Valós idejű navigációs információkkal, megállóhelyek és útvonalak, valós környezetbe ágyazott utazási információkkal, interaktív térképes megoldásokkal, Látássérültek számára speciális navigációs segédeszközök hozzáadásával szeretnénk bővíteni projektünket ez mind támogatás függvényében. 
 
 3. **Gépi tanulás és adatelemzés**
    - Forgalmi minták elemzése
@@ -727,55 +671,28 @@ A KaposTransit használata során számos speciális technikai és közlekedési
 
 ###### Technikai Kifejezések
 1. **GTFS (General Transit Feed Specification)**
-   - Szabványosított formátum a tömegközlekedési menetrendek és kapcsolódó földrajzi adatok megosztására
-   - Lehetővé teszi a különböző közlekedési rendszerek közötti adatcserét
-   - Nemzetközileg elfogadott szabvány
+   A GTFS egy szabványosított formátum a tömegközlekedési menetrendek és kapcsolódó földrajzi adatok megosztására. Lehetővé teszi a különböző közlekedési rendszerek közötti adatcserét, nemzetközileg elfogadott szabvány.
 
 2. **API (Application Programming Interface)**
-   - Szoftverek közötti kommunikációs felület
-   - Lehetővé teszi a különböző rendszerek adatcseréjét
-   - Biztosítja a platformok közötti interoperabilitást
+   Szoftverek közötti kommunikációs felület, ami lehetővé teszi a különböző rendszerek adatcseréjét.
 
 3. **Reszponzív dizájn**
-   - Olyan webes megjelenítési módszer, amely automatikusan igazodik a különböző eszközök képernyőméretéhez
-   - Egységes felhasználói élményt biztosít minden eszközön
+   Olyan webes megjelenítési módszer, amely automatikusan igazodik a különböző eszközök képernyőméretéhez.Egységes felhasználói élményt biztosít minden eszközön.
 
 4. **Tokenizáció**
-   - Bizalmas adatok biztonságos helyettesítése nem érzékeny megfelelőkkel
-   - Személyes adatok védelmének eszköze
+   Bizalmas adatok biztonságos helyettesítése, személyes adatok védelme.
 
 5. **Valós idejű adatfrissítés**
-   - Folyamatos, azonnali adatszolgáltatás
-   - Naprakész információk biztosítása
-   - Dinamikus rendszerfrissítési mechanizmus
+   Folyamatos, azonnali adatszolgáltatás, naprakész információk biztosítása.
 
 ###### Közlekedési kifejezések
 - **Multimodális Közlekedés**
-   - Több közlekedési módot magába foglaló utazási forma
-   - Különböző közlekedési eszközök kombinált használata
-   - Rugalmas és hatékony mobilitási megoldás
+   Több közlekedési módot magába foglaló utazási forma, különböző közlekedési eszközök kombinált használata, rugalmas és hatékony mobilitási megoldás.
 
 ###### 12.2 Gyors hivatkozások: fontos elérhetőségek és linkek
 
-###### Ügyfélszolgálati csatornák
-- **Telefonos Ügyfélszolgálat**: +36-82/411-850
-- **E-mail**: titkarsag@kkzrt.hu
-
 ###### Hivatalos dokumentumok
-- Adatvédelmi szabályzat
-- Felhasználási feltételek
-- Általános szerződési feltételek
-
-###### 12.3 Kapcsolódó dokumentumok: kiegészítő forrásanyagok
-
-###### Technikai dokumentáció
-- **Fejlesztői Dokumentáció**
-   - API leírások
-   - Integrációs útmutatók
-   - Technikai specifikációk
-
-###### Biztonsági dokumentumok
-- Adatvédelmi Tájékoztató
+A weboldal a kaposbusz által létrehozott adatvédelmi szabályzatra, felhasználási feltételeire, általános szerződési feltételeire támaszkodik.
 
 ## Záró gondolatok
 
