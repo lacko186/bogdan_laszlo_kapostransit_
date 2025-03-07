@@ -430,7 +430,7 @@ A KaposTransit mobil kompatibilitása nem csupán egy technikai megoldás, hanem
    Különös figyelmet fordítottunk a gyors betöltési időkre, ehhez próbáltuk optimalizáni az időigényes feladatokat,mindemellett hatékony erőforrás-kezelést is akartunk alacsony energiafogyasztással, ami részben megvalósult.
 
 ###### Támogatott eszköztípusok
-Projektünket Okostelefonokon is teszteltük Android valamint IOS operációs rendszerrel egyaránt. 
+Projektünket okostelefonokon is teszteltük Android valamint IOS operációs rendszerrel egyaránt. 
 
 <center>  
 
@@ -540,28 +540,137 @@ A KaposTransit elsődleges célja, hogy a legmagasabb szintű adatvédelmi és b
 
 </div>
 
-## 9. Hibakeresés és támogatás:
+## 9. Tesztelés:
 
-###### 9.1 Gyakori hibajelenségek: diagnosztikai és megoldási útmutató
+###### 9.1 Automatizált tesztelés
 
-A KaposTransit célja, hogy a lehető legzökkenőmentesebb felhasználói élményt biztosítsa, ugyanakkor felkészültünk a felmerülő technikai kihívásokra is. Átfogó hibaelhárítási rendszerünk segít a felhasználóknak gyorsan és hatékonyan megoldani a felmerülő problémákat.
+Az automatizált tesztelés Playwright-al lett letesztelve, ami egy gyors és megbízható end-to-end tesztelést biztosít modern weboldalakra/webalkalmazásokra.
 
-###### Technikai hibák kategorizálása
+Az automatizált tesztelésnél ellenőriztük, hogy minden oldal rendesen betöltött-e.
+```Javascript
+for (const pageInfo of pages) {
+    test(`${pageInfo.title} oldal betöltése`, async ({ page }) => {
+      await page.goto(`http://localhost/kkzrt/${pageInfo.url}`);
+      await expect(page).toHaveURL(`http://localhost/kkzrt/${pageInfo.url}`);
+    });
+  }
+```
+A program végig megy a pages listán ahol elvan tárolva az egyes oldalak url-je, amit úgy ellenőriztünk, hogy a tesztelő programnak megadott url megegyezik-e a kapott url-lel.
 
-2. **Térképes funkciók hibái**
-   Helymeghatározási pontatlansságok előfordulhatnak,útvonaltervezési hibák.
+Ezentúl ellenőrzi, hogy az egyes API végpontok lekérései igaz értékkel tértek vissza.
+```Javascript
+for (const endpoint of workingApiEndpoints) {
+    test(`${endpoint.name} API végpont ellenőrzése`, async ({ request }) => {
+      const response = await request.get(`http://localhost:3000/${endpoint.url}`);
+      expect(response.ok()).toBeTruthy();
+    });
+  }
+```
+Ugyan úgy, mint az előbb van egy listánk, ami végig megy a programrészen és lekérdezéseket tesz, várva, hogy true értékkel térjen vissza, hogy sikeresnek ítélje a program a tesztesetet.
 
-###### 9.2 Ügyfélszolgálati elérhetőségek:
+Ezek után jönnek a komponensek tesztelése, mi megnézi, hogy a térképek láthatóra van-e állítva,
+```Javascript
+test('Térkép megjelenítés', async ({ page }) => {
+    await page.goto('http://localhost/kkzrt/terkep.php');
+    await expect(page.locator('#map')).toBeVisible();
 
-###### Támogatási csatornák
-1. **Telefonos ügyfélszolgálat**
-   A kaposbusz által nyújtott közvetlen emberi segítségnyújtás, informálódás, amelyet magyar nyelvű, képzett ügyintézők hajtanak végre
+    await page.goto('http://localhost/kkzrt/megallok_kereso.php');
+    await expect(page.locator('#map')).toBeVisible();
+  });
+```
+mindezt azzal, hogy megkeresi a térképeket és, hogy azok értéke láthatóra van-e állítva. (Érthetően ez a teszteset nem ellenőrzi, hogy helyesen működik-e a térképek, ami a mi esetünkben nem menne át a teszten az Google Maps API kulcs hiánya miatt.)
 
-2. **E-mail támogatás**
-   E-mail címen keresztül lehetőség nyílik részletes problémaleírás küldésére, visszajellzésre, valamint részletes dokumentáció csatolására.
+A következő komponens, amit tesztel azaz összes hírnek a kilistázása.
+```Javascript
+test('Az összes hír kilistázása', async ({ page }) => {
+    await page.goto('http://localhost/kkzrt/index.php');
+
+    const btn = await page.locator('#btnMoreNews');
+
+    let isExpanded = await page.evaluate(() => window.isExpanded = false);
+    expect(isExpanded).toBeFalsy();
+
+    await btn.click();
+
+    isExpanded = await page.evaluate(() => window.isExpanded = true);
+    expect(isExpanded).toBeTruthy();
+  });
+```
+A teszteset megnézi, hogy a gomb megnyomása után az isExpanded értéke megváltozik-e igazra, ami a helyes működésnél is megváltozna.
+
+Az utolsó komponens teszteset a Részletek gomb helyes átirányítását, teszteli.
+```Javascript
+test('Főoldalon részletek gomb ellenőrzése', async ({ page }) => {
+    await page.goto('http://localhost/kkzrt/index.php');
+    await page.click('text=Részletek');
+    await expect(page).toHaveURL('http://localhost/kkzrt/news.php?id=1')
+  });
+```
+A teszt közben elmegy a főoldalra, megnyomja a Részletek gombot és megnézi, hogy az adott oldalra vezetett-e át.
+
+Az utolsó előtti része a programnak az API végpontok válaszát vizsgálják.
+```Javascript
+test('API válaszok ellenőrzése', async ({ request }) => {
+    // Megállók API teszt
+    const stopsResponse = await request.get('http://localhost:3000/api/stop');
+    const stopsData = await stopsResponse.json();
+    expect(Array.isArray(stopsData)).toBeTruthy();
+    
+    // A többi másik API végpontot is ugyanígy lett tesztelve 
+});
+```
+Ennél is lekérdezéseket végzünk, aminek a válaszának adatát eltároljuk és a program megnézi, hogy tömb-e a kapott adat.
+
+Az utolsó teszteset megnézi, hogy az infó oldalon lévő linkek valós helyre mutatnak.
+```Javascript
+test('404-es linkek keresése', async ({ page }) => {
+    await page.goto('http://localhost/kkzrt/info.php');
+
+    const links = await page.locator('a').all();
+    let brokenLinks = [];
+
+    for (const link of links) {
+        const href = await link.getAttribute('href');
+
+        if (href && !href.startsWith('#')) {
+            const response = await page.request.get(href);
+
+            if (response.status() === 404) {
+                console.log(`❌ 404 ERROR: ${href}`);
+                brokenLinks.push(href);
+            }
+        }
+    }
+
+    console.log(`✅ Checked ${links.length} links. Found ${brokenLinks.length} broken links.`);
+
+    // Force the test to fail if any broken links exist
+    expect(brokenLinks.length).toBe(0);
+  });
+```
+A program megnyitja az összes linket és, ha valamelyik 404-es oldalra mutat, akkor az adott linket belerakja egy listába és később kiírja. A teszt akkor sikeres, ha egyetlen link sem vezet 404-es oldalra.
+
+<img src="automated_tests.jpg">  
+
+<center>  
+
+**Automatizált tesztesetek**  
+
+</center>
+
+###### 9.2 Manuális tesztelés:
 
 
-</div>
+
+<img src="tesztesetek.jpg">
+
+<center>  
+
+**Manuális tesztesetek**  
+
+</center>
+
+További részletben kérjük nézze meg a mellékelt tesztesetek.xlsx fájlt, ahol le van írva az összes teszteset, amit manuálisan végeztünk.
 <div id="10. Hibakeresés és támogatás">
 
 ## 10. Hibakeresés és támogatás
@@ -625,25 +734,15 @@ A KaposTransit fejlesztési stratégiája nem csupán a jelenlegi igények kiszo
    Valós idejű navigációs információkkal, megállóhelyek és útvonalak, valós környezetbe ágyazott utazási információkkal, interaktív térképes megoldásokkal, Látássérültek számára speciális navigációs segédeszközök hozzáadásával szeretnénk bővíteni projektünket ez mind támogatás függvényében. 
 
 3. **Gépi tanulás és adatelemzés**
-   - Forgalmi minták elemzése
-   - Utazási szokások prediktív modellezése
-   - Dinamikus árképzési modellek
-   - Előrejelző karbantartási rendszerek
-   - Környezeti hatások elemzése
+   A gépi tanulás során szeretnénk hogy mesterséges intelligencia alapján forgalmi mintákat elemezzen, értelmezzen, és létrehozzunk egy olyan rendszert amely szinte az összes megyei jogú város helyi járatos közlekedés modelljének befogadására alkalmas. A használatával  környezeti hatásokat, és olyan tényezőket is megfigyelhetünk amelyek felhasználásával egy olyan rendszert tudnánk kiépíteni amely megállja a helyét és képes felvenni a versenyt.(AI alapú rendszerekkel)
 
 #### Felhasználói élmény fejlesztése
 
 1. **Személyre szabott szolgáltatások**
-   - Mesterséges intelligencia alapú ajánlórendszer
-   - Egyéni utazási preferenciák elemzése
-   - Kontextusfüggő útvonaltervezés
-   - Személyes mobilitási profil kialakítása
+  A mesterséges inteligencia segítségével szeretnénk a felhasználói élményt növelni, ezért személyre szabott ajánlatokkal, új funkciókkal bővítenénk, elemzés után építenénk be a projektbe. 
 
 2. **Komplex utazási statisztikák**
-   - Részletes egyéni utazási elemzések
-   - Környezeti hatásmérő eszközök
-   - Pénzügyi megtakarítási kalkulátorok
-   - Egészséggel és mozgással kapcsolatos statisztikák
+A jövőben a 
 
 #### Integrációs tervek
 
