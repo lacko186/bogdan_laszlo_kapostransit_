@@ -343,7 +343,7 @@ GET /api/marker
 ```
 
 Válasz:
-```json
+```
 {
         "nev": "Pázmány Péter utca",
         "lat": 46.3651,
@@ -373,7 +373,7 @@ GET /api/buszjaratok
 ```
 
 Válasz:
-```json
+```
 {
         "route_id": 1,
         "number": "12",
