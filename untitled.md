@@ -69,14 +69,8 @@
    - 8.3 GDPR megfelelőség
 
 9. [Tesztelés](#9-tesztelés)
-   - 9.1 Tesztelési stratégia
-   - 9.2 Egységtesztek
-   - 9.3 Integrációs tesztek
-   - 9.4 Teljesítmény tesztek
-   - 9.5 Biztonsági tesztek
-   - 9.6 Felhasználói elfogadási tesztek (UAT)
-   - 9.7 Automatizált tesztelés
-   - 9.8 Tesztjelentések
+   - 9.1 Automatizált tesztelés
+   - 9.2 Manuális tesztelés
 
 10. [Hibakeresés és támogatás](#10-hibakeresés-és-támogatás)
     - 10.1 Gyakori hibajelenségek
@@ -89,7 +83,7 @@
     - 11.3 Mobil alkalmazás lehetőségek
     - 11.4 API bővítések
 
-12. [Melléklet](#12-melléklet) x
+12. [Melléklet](#12-melléklet) 
     - 12.1 Fogalomtár
     - 12.2 Gyors hivatkozások
     - 12.3 Kapcsolódó dokumentumok
@@ -97,6 +91,7 @@
 
 ---
 <div id="1-bevezetés">
+
 ## 1. Bevezető
 
 ###### 1.1 A Projekt háttere
